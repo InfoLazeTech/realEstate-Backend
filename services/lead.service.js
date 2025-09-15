@@ -83,7 +83,7 @@ export const editReminder = async (LeadId, reminderId, reminderData) => {
   const reminder = lead.reminders.id(reminderId);
   if (!reminder) throw new Error("Reminder not found");
 
-  object.assign(reminder, reminderData);
+   Object.assign(reminder, reminderData); 
   return await lead.save();
 }
 

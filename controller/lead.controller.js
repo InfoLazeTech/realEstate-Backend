@@ -156,7 +156,7 @@ export const deleteNote = async (req, res) => {
             req.params.leadId,
             req.params.noteId
         );
-        req.json(deleteLead);
+        res.json(deleteLead);
     } catch (error) {
         res.status(400).json({ error: error.message });
 
@@ -203,7 +203,7 @@ export const deleteReminder=async(req,res)=>
             req.params.leadId,
             req.params.reminderId
         );
-        res.json(updateLead);
+        res.json(updatedLead);
     } catch (error) {
         res.status(400).json({ error: error.message });
         
