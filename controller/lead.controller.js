@@ -50,7 +50,7 @@ export const updateLead = async (req, res) => {
 
     } catch (error) {
         res.status(401).json({
-            error: err.message
+            error: error.message
         })
 
     }
@@ -68,7 +68,7 @@ export const deleteLead = async (req, res) => {
 
     } catch (error) {
         res.status(401).json({
-            error: err.message
+            error: error.message
         })
 
     }
@@ -96,8 +96,8 @@ export const importExcel = async (req, res) => {
         });
         await leadService.bulkInsert(leads);
         res.json({ message: "Leads imported successfully", count: leads.length });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -132,18 +132,43 @@ export const addNote = async (req, res) => {
     try {
         const note = await leadService.addNote(req.params.id, req.body);
         res.json(note);
-    } catch (err) {
-        res.status(400).json({ error: err.message });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
 };
+// Notes
+export const editNote = async (req, res) => {
+    try {
+        const updatedLead = await leadService.editNote(
+            req.params.leadId,
+            req.params.noteId,
+            req.body
+        );
+        res.json(updatedLead);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+//delete notes
+export const deleteNote = async (req, res) => {
+    try {
+        const deleteLead = await leadService.deleteNote(
+            req.params.leadId,
+            req.params.noteId
+        );
+        req.json(deleteLead);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
 
+    }
+}
 // Reminders
 export const addReminder = async (req, res) => {
     try {
         const reminder = await leadService.addReminder(req.params.id, req.body);
         res.json(reminder);
-    } catch (err) {
-        res.status(400).json({ error: err.message });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
 };
 
@@ -158,7 +183,32 @@ export const getReminders = async (req, res) => {
         })
     }
 }
-
+// Reminders
+export const editReminder = async (req, res) => {
+  try {
+    const updatedLead = await leadService.editReminder(
+      req.params.leadId,
+      req.params.reminderId,
+      req.body
+    );
+    res.json(updatedLead);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+export const deleteReminder=async(req,res)=>
+{
+    try {
+        const updatedLead= await leadService.deleteReminder(
+            req.params.leadId,
+            req.params.reminderId
+        );
+        res.json(updateLead);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+        
+    }
+}
 
 export const searchLeads = async (req, res) => {
     try {
@@ -166,7 +216,7 @@ export const searchLeads = async (req, res) => {
             name, location, score, stage, priority, minBudget, maxBudget,
             page = 1, limit = 10, sortBy = "createdAt", order = "desc"
         } = req.query;
-         const filters = { name, location, score, stage, priority, minBudget, maxBudget };
+        const filters = { name, location, score, stage, priority, minBudget, maxBudget };
 
         if (priority) filters.priority = priority;
         if (stage) filters.stage = stage;
